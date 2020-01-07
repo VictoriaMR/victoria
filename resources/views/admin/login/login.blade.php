@@ -14,4 +14,4 @@
         <hr class="hr20" >
     </form>
 </div>
-<script type="text/javascript" src="../resources/js/admin/login.js"></script>
+<script type="text/javascript" src="js/admin/login.js"></script>
