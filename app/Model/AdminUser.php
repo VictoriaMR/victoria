@@ -33,7 +33,7 @@ class AdminUser extends BaseModel
 
     	$insertData = [
     		'moblie' => $data['moblie'],
-    		'name' => $data['name'];
+    		'name' => $data['name'],
     		'nickname' => $data['nickname'] ?? '',
     		'sex' => $data['sex'] ?? 0,
     	];
