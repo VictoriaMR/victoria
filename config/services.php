@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'api' => [
+        'home' => 'http://localhost:80/api/',
+        'admin' => 'http://localhost:80/api/admin/',
+    ],
+
 ];

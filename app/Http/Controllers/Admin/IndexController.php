@@ -9,23 +9,19 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
+        $data = [
+            'title' => '首页',
+        ];
+
+        return redirect('admin/login');
+
     	if (\Auth::check()) {
-
+            \Auth::login($user);
+            return $user;
     	} else {
-    		$data = [
-    			'title' => '管理员登陆',
-    		];
-    		return view('admin.login.login', $data);
+    		
+    		return redirect('admin/login');
     	}
-    	// $user = new User();
-	     //    $user->name = $name;
-	     //    $user->email = $email;
-	     //    $user->password = bcrypt($password);
-	     //    $user->save();
-
-	     //    \Auth::login($user); // 注册的用户让其进行登陆状态
-
-    	// return 'admin index';
     }
 
     /**
@@ -36,6 +32,9 @@ class IndexController extends Controller
      */
     public function login(Request $request)
     {
-    	return view('admin.login.login');
+        $data = [
+            'title' => '管理员登陆',
+        ];
+    	return view('admin.login.login', $data);
     }
 }
