@@ -9,17 +9,12 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        $data = [
-            'title' => '首页',
-        ];
-
-        return redirect('admin/login');
-
-    	if (\Auth::check()) {
-            \Auth::login($user);
-            return $user;
+    	if (!empty($request->session()->get('user_id'))) {
+            $data = [
+                'title' => '首页',
+            ];
+            return view('admin.index');
     	} else {
-    		
     		return redirect('admin/login');
     	}
     }

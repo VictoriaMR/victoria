@@ -4,7 +4,8 @@ $(function  () {
       //监听提交
       form.on('submit(login)', function(data){
         $.post(ADMIN_URI + 'login', data.field, function(res){
-            if (res.data) {
+            console.log(res)
+            if (res.code == 200) {
                 // location.href='index.html'
             } else {
                 layer.msg(res.message);
