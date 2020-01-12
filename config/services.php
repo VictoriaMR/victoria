@@ -35,4 +35,9 @@ return [
         'admin' => 'http://localhost:80/api/admin/',
     ],
 
+    'domain' => [
+        'admin' => env('DOMAIN_ADMIN_URL'),
+        'home' => env('DOMAIN_HOME_URL'),
+    ],
+
 ];

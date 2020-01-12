@@ -2,34 +2,51 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\BaseController;
 
-class IndexController extends Controller
+class IndexController extends BaseController
 {
+    /**
+     * @method 首页入口
+     * @author Victoria
+     * @date   2020-01-12
+     */
     public function index(Request $request)
     {
-    	if (!empty($request->session()->get('user_id'))) {
-            $data = [
-                'title' => '首页',
-            ];
-            return view('admin.index');
-    	} else {
-    		return redirect('admin/login');
-    	}
+        $result = $this->checkLogin($request);
+        if (!$result) {
+            return redirect('admin/login');
+        }
+        $data = [
+            'title' => '首页',
+            'admin_url' => config('service.domain.admin')
+        ];
+        return view('admin.index', $data);
     }
 
     /**
-     * 用户登陆
-     * @author   Mingrong
-     * @DateTime 2020-01-07
-     * @return   
+     * @method 概述
+     * @author Victoria
+     * @date   2020-01-12
+     * @param  Request    $request [description]
+     * @return [type]              [description]
      */
-    public function login(Request $request)
+    public function overview(Request $request)
     {
-        $data = [
-            'title' => '管理员登陆',
-        ];
-    	return view('admin.login.login', $data);
+        $result = $this->checkLogin($request);
+        if (!$result) {
+            return redirect('admin/login');
+        }
+        $data = [];
+        //管理员信息
+        $userInfo = $this->baseService->getInfoCache($request->session()->get('user_id'));
+        // 系统信息
+        $systemInfo = $this->getSystemInfo();
+        $data = array_merge($data, $userInfo->toArray(), $systemInfo);
+
+        return view('admin.overview', $data);
     }
+
+
 }

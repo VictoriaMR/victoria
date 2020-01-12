@@ -19,5 +19,27 @@ class BaseLogger extends BaseModel
     protected $guarded = ['log_id'];
 
     const TYPE_DEFAULT = 0; //默认类型 用户
-    const TYPE_ADMIN_USER = 1; //系统管理员
+
+    const TYPE_ADMIN_USER_LOGGIN = 11; //系统管理员登陆日志
+
+    /**
+     * @method 新增日志
+     * @author Victoria
+     * @date   2020-01-12
+     * @return boolean
+     */
+    public function create($data)
+    {
+        if (empty($data)) return false;
+
+        $insert = [
+            'target_id' => $data['target_id'],
+            'entity_id' => $data['entity_id'] ?? '',
+            'type_id' => $data['type_id'] ?? null,
+            'raw_data' => !empty($data['raw_data']) ? json_encode($data['raw_data']) : null,
+            'created_at' => \Carbon\Carbon::now()
+        ];
+
+        return $this->insertGetId($insert);
+    }
 }

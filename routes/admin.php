@@ -13,4 +13,13 @@
 
 Route::get('/', 'IndexController@index');
 
-Route::get('login', 'IndexController@login');
+Route::get('login', 'IndexController@login'); //登陆
+Route::get('overview', 'IndexController@overview'); //首页统计
+
+/**
+ * 管理员
+ */
+Route::group(['prefix' => 'user'], function () {
+	Route::get('list', 'UserController@getList');
+	Route::get('addPage', 'UserController@addPage');
+});

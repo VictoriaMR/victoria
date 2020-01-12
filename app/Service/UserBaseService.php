@@ -1,17 +1,30 @@
 <?php 
 
-namespace App\Service\Common;
+namespace App\Service;
 
 use App\Service\Base as BaseService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Http\Request;
 
 /**
  * 	用户公共类
  */
-class MemberBaseService extends BaseService
+class UserBaseService extends BaseService
 {	
+	/**
+	 * @method 创建用户
+	 * @author Victoria
+	 * @date   2020-01-12
+	 * @return boolean
+	 */
+	public function create($data)
+	{
+		if (empty($data['password'])) return false;
+		$data['salt'] = $this->getSalt();
+		$data['password'] = \Hash::make($this->getPasswd($data['password'], $data['salt']));
+
+		return $this->baseModel->create($data);
+	}
 	/**
 	 * @method 获取随机数
 	 * @author Victoria
@@ -87,6 +100,7 @@ class MemberBaseService extends BaseService
 					'user_id' => $info['user_id'],
 					'name' => $info['name'],
 					'nickname' => $info['nickname'],
+					'is_super' => $info['is_super'],
 				];
 				session($data);
 				return true;
@@ -220,4 +234,89 @@ class MemberBaseService extends BaseService
 	{
 		return $this->baseModel->isExistUserByMobile($name);
 	}
+
+	/**
+     * 通过ID获取用户信息
+     * 
+     * @param string $userId
+     * @return array 用户信息
+     */
+    public function getInfo($userId)
+    {
+        return $this->baseModel->getInfo($userId);
+    }
+
+    /**
+     * @method 获取缓存数据
+     * @author Victoria
+     * @date   2020-01-12
+     * @param  integer      $userId 
+     * @return array
+     */
+    public function getInfoCache($userId)
+    {
+        $cacheKey = $this->getInfoCacheKey($userId);
+
+        if ($info = Cache::get($cacheKey)) {
+            return $info;
+        } else {
+            $info = $this->getInfo($userId);
+
+            Cache::put($cacheKey, $info, self::constant('INFO_CACHE_TIMEOUT'));
+
+            return $info;
+        }
+    }
+
+    /**
+     * @method 缓存key
+     * @author Victoria
+     * @date   2020-01-12
+     * @param  string      $userId 
+     * @return string cachekey
+     */
+    public function getInfoCacheKey($userId)
+    {
+        return 'MEMBER_INFO_CACHE_' . $userId;
+    }
+
+    /**
+     * @method 清除缓存
+     * @author Victoria
+     * @date   2020-01-12
+     * @param  integer      $userId 
+     * @return boolean
+     */
+    public function clearCacheKey($userId)
+    {
+        $cacheKey = $this->getInfoCacheKey($userId);
+        $info = $this->getInfo($userId);
+        return Cache::foget($cacheKey);
+    }
+
+    /**
+     * @method 获取用户列表
+     * @author Victoria
+     * @date   2020-01-12
+     * @return array list
+     */
+    public function getList($data, $page = 1, $pagesize = 20)
+    {
+    	$filter = [];
+
+    	if (!empty($data['name'])) {
+    		$filter[] = ['name', 'like', '%'.$data['name'].'%'];
+    	}
+    	if (!empty($data['mobile'])) {
+    		$filter[] = ['mobile', 'like', '%'.$data['mobile'].'%'];
+    	}
+
+    	$total = $this->getDataList(true, $filter);
+
+    	if ($total > 0) {
+    		$list = $this->getDataList(false, $filter, ['page' => (int) $page, 'pagesize' => (int) $pagesize], [['created_at', 'desc']]);
+    	}
+
+    	return $this->getPaginationList($list ?? [], $total, $page, $pagesize);
+    }
 }

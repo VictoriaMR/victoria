@@ -2,7 +2,7 @@
 
 namespace App\Service\Admin;
 
-use App\Service\Common\MemberBaseService as BaseService;
+use App\Service\UserBaseService as BaseService;
 use App\Model\AdminUser;
 
 /**

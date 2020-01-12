@@ -128,6 +128,21 @@ class Base
     }
 
     /**
+     * @method 获取页码类型
+     * @author Victoria
+     * @date   2020-01-12
+     * @param  [type]            $list    
+     * @param  [type]            $total   
+     * @param  integer           $page    
+     * @param  integer           $pagesize
+     * @return array
+     */
+    public function getPaginationList($list, $total, $page = 1, $pagesize = 10)
+    {
+        return $this->baseModel->getPaginationList($list, $total, $page, $pagesize);
+    }
+
+    /**
      * 获取常量继承方法
      * @author   Mingrong
      * @DateTime 2020-01-10

@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\Model\Common\BaseUser as BaseModel;
+use App\Model\BaseUser as BaseModel;
 
 class AdminUser extends BaseModel
 {
@@ -10,7 +10,7 @@ class AdminUser extends BaseModel
     protected $table = 'admin_user';
 
     //主键
-    protected $primary_key = 'user_id';
+    protected $primaryKey = 'user_id';
 
     //不能被重置的字段
     protected $guarded = ['user_id'];
