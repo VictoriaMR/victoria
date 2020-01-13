@@ -9,6 +9,7 @@
           <cite>@if(!empty($_GET['product_id'])) 编辑商品 @else 新增商品 @endif</cite></a>
       </span>
     </div>
+    <div style="padding-top: 10px;"></div>
 	<div class="layui-card">
 		<div class="layui-fluid">
 			<form id="addForm" class="layui-form" action="" style="width: 800px;">
