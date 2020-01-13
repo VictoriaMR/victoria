@@ -44,7 +44,7 @@
                         <table class="layui-table layui-form">
                           <thead>
                             <tr>
-                              <th>
+                              <th width="10">
                                 <input type="checkbox" name=""  lay-skin="primary">
                               </th>
                               <th>ID</th>
@@ -59,7 +59,7 @@
                           <tbody>
                             @foreach($list as $info)
                             <tr>
-                              <td>
+                              <td width="10">
                                 <input type="checkbox" name=""  lay-skin="primary">
                               </td>
                               <td>{{$info['user_id'] ?? ''}}</td>

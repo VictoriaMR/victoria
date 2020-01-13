@@ -1,4 +1,5 @@
 @include('admin/common/baseHeader')
+<link rel="stylesheet" href="http://localhost:8080/css/login.css">
 <script type="text/javascript" src="http://localhost:8080/js/admin/login.js"></script>
 <body class="login-bg">
     <div class="login layui-anim layui-anim-up">

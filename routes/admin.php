@@ -23,3 +23,11 @@ Route::group(['prefix' => 'user'], function () {
 	Route::get('list', 'UserController@getList');
 	Route::get('addPage', 'UserController@addPage');
 });
+
+/**
+ * 商品
+ */
+Route::group(['prefix' => 'product'], function () {
+	Route::get('list', 'ProductController@getList');
+	Route::get('addPage', 'ProductController@addPage');
+});

@@ -111,6 +111,27 @@
                 </li>
                 <li>
                     <a href="javascript:;">
+                        <i class="iconfont left-nav-li" lay-tips="订单管理">&#xe6f4;</i>
+                        <cite>商品管理</cite>
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a onclick="xadmin.add_tab('商品列表', ADMIN_URL + 'product/list')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>商品列表</cite>
+                            </a>
+                        </li>
+                        <li>
+                            <a onclick="xadmin.add_tab('新增商品', ADMIN_URL + 'product/addPage')">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>新增商品</cite>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
                         <i class="iconfont left-nav-li" lay-tips="订单管理">&#xe723;</i>
                         <cite>订单管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
@@ -364,4 +385,5 @@
     <div class="page-content-bg"></div>
     <!-- 右侧主体结束 -->
 </body>
+
 @include('admin/common/baseFooter')
