@@ -2,11 +2,9 @@
 
 use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-*/
+Route::group(['namespace'=>'Common'], function (){
+    Route::post('upload', 'FileController@upload');
+});
 
 /**
  * admin api

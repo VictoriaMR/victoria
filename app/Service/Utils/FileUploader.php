@@ -21,13 +21,13 @@ class FileUploader
     public static function upload($filePath, $module='')
     {
         $client = new \GuzzleHttp\Client([
-            'base_uri' => env("FILE_UPLOAD_URL"),
+            'base_uri' => env('FILE_UPLOAD_URL'),
             'timeout'  => 30.0,
         ]);
 
         if (!file_exists($filePath)) return false;
          
-        $body = fopen($filePath, "r");
+        $body = fopen($filePath, 'r');
         $response = $client->request('POST', 'file/upload/save_path/' . $module, [
             'multipart' => [
                 [
@@ -39,9 +39,9 @@ class FileUploader
 
         $result = json_decode($response->getBody(), true);
 
-        if (empty($result) || $result["code"] != 200) return false;
+        if (empty($result) || $result['code'] != 200) return false;
 
-        return $result["data"];
+        return $result['data'];
     }
 
     /**
@@ -54,7 +54,7 @@ class FileUploader
     public static function uploadByString($content, $filename, $module)
     {
         $client = new \GuzzleHttp\Client([
-            'base_uri' => env("FILE_UPLOAD_URL"),
+            'base_uri' => env('FILE_UPLOAD_URL'),
             'timeout'  => 30.0,
         ]);
         
@@ -71,9 +71,9 @@ class FileUploader
         $result = json_decode($response->getBody(), true);
 
 
-        if (empty($result) || $result["code"] != "200") return false;
+        if (empty($result) || $result['code'] != '200') return false;
 
-        return $result["data"];
+        return $result['data'];
     }
 
     /**
@@ -84,19 +84,19 @@ class FileUploader
     public static function uploadByBase64String($file, $module='')
     {
         $client = new \GuzzleHttp\Client([
-            'base_uri' => env("FILE_UPLOAD_URL"),
+            'base_uri' => env('FILE_UPLOAD_URL'),
             'timeout'  => 30.0,
         ]);
 
         $params = [
-            'upload_method' => "base64"
+            'upload_method' => 'base64'
         ];
         
         if (!is_array($file)) {
-            $params["file"] = $file;
+            $params['file'] = $file;
         } else {
             foreach ($file as $item) {
-                $params["file[]"] = $item;
+                $params['file[]'] = $item;
             }
         }
         
@@ -104,9 +104,9 @@ class FileUploader
 
         $result = json_decode($response->getBody(), true);
 
-        if (!empty($result) || $result["code"] != "t") return false;
+        if (!empty($result) || $result['code'] != 't') return false;
 
-        return $result["data"];
+        return $result['data'];
     }
 
     public static function uploadByUrl($url, $module='avatar')
@@ -115,6 +115,6 @@ class FileUploader
         
         if (empty($filename)) return false;
         
-        return self::upload(storage_path("app/{$filename}"), $module);
+        return self::upload(storage_path('app/{$filename}'), $module);
     }
 }
