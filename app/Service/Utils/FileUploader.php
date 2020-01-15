@@ -11,6 +11,8 @@ use \Illuminate\Filesystem\Filesystem;
 
 class FileUploader
 {
+    const FILE_TYPE = ['avatar', 'product'];
+
     /**
      * 通过文件路径上传
      *
@@ -18,29 +20,26 @@ class FileUploader
      * @param string $module 图片业务类别（可不传）,比如头像 avatar 商品 product
      * @return mix 失败返回 false
      */
-    public static function upload($filePath, $module='')
+    public static function upload($file, $cate)
     {
-        $client = new \GuzzleHttp\Client([
-            'base_uri' => env('FILE_UPLOAD_URL'),
-            'timeout'  => 30.0,
-        ]);
+        if (empty($file) || !in_array($cate, self::FILE_TYPE)) return false;
 
-        if (!file_exists($filePath)) return false;
-         
-        $body = fopen($filePath, 'r');
-        $response = $client->request('POST', 'file/upload/save_path/' . $module, [
-            'multipart' => [
-                [
-                    'name'     => 'file_name',
-                    'contents' => $body
-                ]  
-            ]
-        ]);
+        $originalName = $file->getClientOriginalName(); //源文件名称
+        $extension = $file->getClientOriginalExtension(); //后缀
+        $tmpFile = $file->getRealPath(); //上传文件路径
 
-        $result = json_decode($response->getBody(), true);
+        $hash = hash_file('crc32', $tmpFile); //生成文件hash值
 
-        if (empty($result) || $result['code'] != 200) return false;
+        $insert = [
+            'filename' => $originalName,
+            'filetype' => $extension,
+            'file_url' => $data['file_url'],
+            'crc32' => $hash,,
+        ];
 
+        $systemAttachmentService = \App::make('App\Service\Common\SystemAttachmentService');
+
+        print_r($hash);dd();
         return $result['data'];
     }
 

@@ -38,6 +38,7 @@ return [
     'domain' => [
         'admin' => env('DOMAIN_ADMIN_URL'),
         'home' => env('DOMAIN_HOME_URL'),
+        'file_center' => env('FILE_UPLOAD_CENTER'),
     ],
 
 ];

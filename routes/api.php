@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 
-Route::group(['namespace'=>'Common'], function (){
+Route::group(['namespace'=>'Common', 'prefix'=>'common'], function (){
     Route::post('upload', 'FileController@upload');
 });
 
