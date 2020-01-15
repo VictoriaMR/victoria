@@ -114,7 +114,8 @@ class Image
     * @param ImageFile String 图片路径
     * @return 转为base64的图片
     */
-    public static function Base64EncodeImage($ImageFile) {
+    public static function Base64EncodeImage($ImageFile) 
+    {
         if(file_exists($ImageFile) || is_file($ImageFile)){
             $base64_image = '';
             $image_info = getimagesize($ImageFile);
@@ -127,8 +128,8 @@ class Image
         }
     }
 
-
-    public static function urlExists($url) {
+    public static function urlExists($url) 
+    {
         $ch = curl_init(); 
         curl_setopt ($ch, CURLOPT_URL, $url); 
         //不下载

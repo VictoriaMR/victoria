@@ -12,6 +12,7 @@ use \Illuminate\Filesystem\Filesystem;
 class FileUploader
 {
     const FILE_TYPE = ['avatar', 'product'];
+    const FILE_COMPERSS = ['jpg', 'jpeg', 'png'];
 
     /**
      * 通过文件路径上传
@@ -28,19 +29,50 @@ class FileUploader
         $extension = $file->getClientOriginalExtension(); //后缀
         $tmpFile = $file->getRealPath(); //上传文件路径
 
-        $hash = hash_file('crc32', $tmpFile); //生成文件hash值
-
-        $insert = [
-            'filename' => $originalName,
-            'filetype' => $extension,
-            'file_url' => $data['file_url'],
-            'crc32' => $hash,,
-        ];
-
+        $hash = hash_file('md5', $tmpFile); //生成文件hash值
         $systemAttachmentService = \App::make('App\Service\Common\SystemAttachmentService');
 
-        print_r($hash);dd();
-        return $result['data'];
+        $returnData = [];
+        if ($systemAttachmentService->isExitsHash($hash)) { 
+            //文件已存在
+            $returnData = $systemAttachmentService->getAttachmentByHash($hash);
+
+        } else {
+
+            $insert = [
+                'filename' => $originalName,
+                'filetype' => $extension,
+                'file_url' => $cate.'/'.$hash.'.'.$extension,
+                'checksum' => $hash,
+            ];
+
+            //保存文件地址
+            $saveUrl = config('services.domain.file_center').$insert['file_url'];
+
+            $savePath = pathinfo($saveUrl, PATHINFO_DIRNAME);
+            //创建目录
+            if (!is_dir($savePath)) {
+                mkdir($savePath, 0777, true);
+            }
+            $result = move_uploaded_file($tmpFile, $saveUrl);
+
+            if ($result) {
+                //水印
+                // $imageWater = new \App\Service\Utils\ImageWater($saveUrl);
+                // $imageWater->output();
+                
+                //图片文件压缩存放
+                if (in_array(strtolower($extension), self::FILE_COMPERSS)) {
+                    $imageCompress = new \App\Service\Utils\ImageCompress($saveUrl);
+                    $imageCompress->compressImg(config('services.domain.file_center').$cate.'/small/'.$hash.'.'.$extension);
+                }
+                $attachmentId = $systemAttachmentService->create($insert);
+                $insert['attachment_id'] = $attachmentId;
+            }
+            $returnData = $insert;
+        }
+
+        return $returnData;
     }
 
     /**

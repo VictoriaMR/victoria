@@ -29,4 +29,27 @@ class SystemAttachmentService extends BaseService
     {
     	return $this->baseModel->create($data);
     }
+
+    /**
+     * @method 文件是否存在
+     * @author Victoria
+     * @date   2020-01-15
+     * @param  string    $checksum 
+     * @return boolean             
+     */
+    public function isExitsHash($checksum)
+    {
+    	return $this->baseModel->isExitsHash($checksum);
+    }
+
+    /**
+     * @method 根据hash获取文件信息
+     * @author Victoria
+     * @date   2020-01-15
+     * @return array
+     */
+    public function getAttachmentByHash($checksum)
+    {
+    	return $this->baseModel->getAttachmentByHash($checksum);
+    }
 }

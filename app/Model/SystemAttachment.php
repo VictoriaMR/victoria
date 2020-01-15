@@ -25,14 +25,13 @@ class SystemAttachment extends BaseModel
     {
     	if (empty($data['file_url']) || empty($data['checksum'])) return false;
 
-    	$attachmentId = $this->getAttachmentIdByCrc32($data['crc32']);
-    	if (!empty($attachmentId)) return $attachmentId;
+    	if ($this->isExitsHash($data['checksum'])) return false;
 
     	$insert = [
     		'filename' => $data['filename'],
-		  	'filetype' => $data['filetype'],,
-		  	'file_url' => $data['file_url'],,
-		  	'crc32' => $data['crc32'],,
+		  	'filetype' => $data['filetype'],
+		  	'file_url' => $data['file_url'],
+		  	'checksum' => $data['checksum'],
 		  	'created_at' => \Carbon\Carbon::now(),
     	];
 
@@ -40,18 +39,29 @@ class SystemAttachment extends BaseModel
     }
 
     /**
-     * @method 查看文件唯一码是否已上传
+     * @method 根据hash获取文件信息
      * @author Victoria
      * @date   2020-01-15
-     * @return integer
+     * @return array
      */
-    public function getAttachmentIdByCrc32($crc32)
+    public function getAttachmentByHash($checksum)
     {
-    	if (empty($crc32)) return false;
+    	if (empty($checksum)) return false;
 
-    	$result = $this->where('crc32', $crc32)
-    				   ->select('attachment_id')
+    	$result = $this->where('checksum', $checksum)
     				   ->first();
-    	return $result['attachment_id'] ?? 0;
+    	return $result ?? [];
+    }
+
+    /**
+     * @method 文件是否存在
+     * @author Victoria
+     * @date   2020-01-15
+     * @param  string    $checksum 
+     * @return boolean             
+     */
+    public function isExitsHash($checksum)
+    {
+    	return $this->where('checksum', $checksum)->count() > 0;
     }
 }
