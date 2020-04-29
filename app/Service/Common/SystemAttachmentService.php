@@ -37,9 +37,9 @@ class SystemAttachmentService extends BaseService
      * @param  string    $checksum 
      * @return boolean             
      */
-    public function isExitsHash($checksum)
+    public function isExitsHash($checkno)
     {
-    	return $this->baseModel->isExitsHash($checksum);
+    	return $this->baseModel->isExitsHash($checkno);
     }
 
     /**

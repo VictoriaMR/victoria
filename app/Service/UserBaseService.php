@@ -92,7 +92,7 @@ class UserBaseService extends BaseService
 
 		$password = $this->getPasswd($password, $info['salt']);
 
-		if (\Hash::check($password, $info['password'])) {
+		if ($this->checkPassword($password, $info['password'])) {
 			if ($isToken) { //生成token 返回
 				return $this->generateToken($info['user_id']);
 			} else { //生成session
@@ -108,6 +108,19 @@ class UserBaseService extends BaseService
 		}
 
 		return false;
+	}
+
+	/**
+	 * @method 检查两者密码
+	 * @author Victoria
+	 * @date   2020-03-22
+	 * @param  string        $inPassword     输入密码
+	 * @param  string        $sourcePassword 源密码
+	 * @return boolean
+	 */
+	public function checkPassword($inPassword = '', $sourcePassword = '')
+	{
+		return \Hash::check($password, $info['password']);
 	}
 
 	/**

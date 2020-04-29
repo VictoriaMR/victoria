@@ -141,6 +141,7 @@ class Helper
      */
     public static function mysqlVersion()
     {
-        return \DB::select("select version() as version")[0]->version ?? '';
+        $Db = new \mvc\DB ();
+        return $Db->getOne("select version() as version")['version'] ?? '';
     }
 }
